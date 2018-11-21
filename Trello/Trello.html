@@ -1,0 +1,299 @@
+<!-- OmniView:off -->
+<html>
+<head>
+	<style>
+		@import	url(icon-font/trello-sciter.css);
+
+		html { background: #0079BF; overflow: hidden; }
+		body
+		{
+			flow: vertical;
+			margin: 0;
+
+			font-family: Arial;
+			font-size: 14px;
+			color: #4d4d4d;
+			line-height: 18px;
+			overflow-x: auto;
+		}
+
+		header
+		{
+			padding: 3px;
+			background: #0067A3;
+			text-align: center
+		}
+
+		header img { opacity: 0.5; }
+		header img:hover { opacity: 1; transition: opacity(linear, 180ms); }
+
+		h1.board-header { margin: 10px; margin-bottom: 5px; font-size: 21px; }
+
+		main
+		{
+			display: block;
+			height: *;
+			max-height: *;
+		}
+
+		.link-taco
+		{
+			display: inline-block;
+			margin: 0 4px;
+			padding: 5px 8px;
+			border-radius: 3px;
+			cursor: pointer;
+			color: #f6f6f6;
+		}
+		.link-taco:hover
+		{
+			background: rgba(0,0,0,.12);
+			color: #f6f6f6;
+		}
+
+		.dark-hover { color: #999; }
+		.dark-hover:hover { border-radius: 3px; background: #CDD2D4; color: #4d4d4d; }
+
+		.std-btn
+		{
+			padding: 7px 12px;
+			background: none;
+			background-color: rgba(0, 0, 0, 0.12);
+			color: rgba(255,255,255,.7);
+			cursor: pointer;
+			border-radius: 3px;
+			horizontal-align: left;
+			text-align: left;
+			font-size: inherit;
+		}
+		.std-btn:hover { background: rgba(0,0,0,.3); transition: background-color(linear, 180ms); }
+	</style>
+
+	<style>
+		// STYLE for lists -> #tpl-list
+		main { padding: 5px 0; flow: horizontal; }
+		main > * { width: 270px; }
+		main #btn-add-list { display: block; }
+
+		section
+		{
+			// links the element with script class
+			prototype: DndListBehavior;
+
+			flow: vertical;
+			margin: 0 10px;
+			overflow-y: hidden;
+			height: *;
+			max-height: max-content;
+
+			background: #E2E4E6;
+			border-radius: 3px;
+		}
+		section.indrag { background: rgba(0, 0, 0, 0.2); }
+		section.indrag > * { visibility: hidden; }
+
+		/*section:active
+		{
+			position: relative;
+			box-shadow: 0 5px 6px rgba(0, 0, 0, .15);
+		}*/
+
+		section .list-header
+		{
+			flow: horizontal;
+			padding: 8px 8px 10px 10px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+		section .list-header i
+		{
+			padding: 4px 8px;
+			margin-left: *;
+			font-size: 10px;
+		}
+
+		section .list-newcard
+		{
+			color: #8c8c8c;
+			cursor: pointer;
+			padding: 8px 10px;
+		}
+		section .list-newcard:hover { text-decoration: underline; }
+	</style>
+
+	<style>
+		// STYLE for cards -> #tpl-card
+		section ul /*list of cards which might show overflow scrolbars*/
+		{
+			// TODO: uncomment in next Sciter release
+			//height: *;
+			overflow-y: scroll-indicator;
+
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		section li
+		{
+			// links the element with script class
+			prototype: DndCardBehavior;
+
+			flow: stack;
+			margin: 0 8px 6px 8px;
+
+			background: #fff;
+			border-bottom: 1px solid #ccc;
+			border-radius: 3px;
+			overflow: hidden;
+
+		}
+		section li:hover { background: #edeff0; cursor: pointer; }
+		section li .content > div
+		{
+			margin-bottom: 4px;
+		}
+
+		// Card row type styling
+		section li .card-edit
+		{
+			visibility: none;
+			width: max-content;
+			margin: 3px 3px 0 *;
+		}
+		section li:hover .card-edit { visibility: visible; }
+
+		section li.indrag > * { visibility: hidden !important; }
+		section li.indrag { background: #c4c9cc; }
+
+		section li i.ft.ft-pencil
+		{
+			padding: 5px 9px;
+			cursor: pointer;
+			font-size: 12px;
+		}
+		section li img.card-cover { visibility: none; }
+		section li img.card-cover[src] { visibility: visible; width: *; }
+		section li div.card-title { padding: 4px 6px 0px 8px; }
+	</style>
+
+	<script type="text/tiscript">
+		include "drag-n-drop.tis";
+		
+		var data = [
+			{
+				board-name: "Basics",
+				cards: [
+					{ t: "Welcome to Trello!" },
+					{ t: "This is a card." },
+					{ t: "Click on a card to see what's behind it." },
+					{ t: "You can attach pictures and files...", a: "taco.png" },
+					{ t: "... any kind of hyperlink ..." },
+					{ t: "... or checklists." }
+				]
+			},
+			{
+				board-name: "Intermediate",
+				cards: [
+					{ t: "Invite your team to this board using the Add Members button" },
+					{ t: "Drag people onto a card to indicate that they're responsible for it" },
+					{ t: "Use color-coded labels for organization" },
+					{ t: "You can change the board background" },
+					{ t: "Try dragging cards anywhere." },
+				]
+			},
+			{
+				board-name: "Advanced",
+				cards: [
+					{ t: "Use as many boards as you want!" },
+					{ t: "Want tips, usage examples, or API info?" },
+					{ t: "Want to use keyboard shortcuts? We have them!" },
+					{ t: "Get the apps for iOS, Android, and Windows 8!" },
+					{ t: "Want updates on new features?" },
+					{ t: "Need help?" },
+				]
+			}
+		];
+
+		function Setup()
+		{
+			var el_main = $(main);
+			for(var s in data)
+			{
+				var el_section = self#tpl-list[0].clone();
+				el_main.insert(el_section, el_main.length - 1);
+				el_section.$(.list-header span).text = s#board-name;
+
+				for(var c in s.cards)
+				{
+					var el_card = self#tpl-card[0].clone();
+					el_section.$(ul).append(el_card);
+					el_card.$(.card-title).text = c.t;
+					if(c.a)
+					{
+						el_card.$(.card-cover).@#src = c.a;
+					}
+				}
+			}
+		}
+		Setup();
+
+		$(body).subscribe(function(evt) {
+			this.scrollTo(this.scroll(#left)-10*evt.wheelDelta, 0);
+		}, Event.MOUSE, Event.MOUSE_WHEEL);
+
+		function Element.install_link_handler()
+		{
+			this.onMouse = function(evt)
+			{
+				if(evt.type==(Event.MOUSE_UP | Event.SINKING) && evt.target.$is(a))
+				{
+					if(evt.target.@#href)
+						Sciter.launch(evt.target.@#href);
+					return true;
+				}
+			}
+		}
+		$(body).install_link_handler();
+	</script>
+</head>
+
+<body>
+	<div #tpl-list.outline style="display: none">
+		<section>
+			<div .list-header>
+				<span />
+				<i .ft.ft-dot-3 .dark-hover />
+			</div>
+
+			<ul />
+
+			<div .list-newcard.dark-hover>Add a card...</div>
+		</section>
+	</div>
+
+	<div #tpl-card.outline style="display: none">
+		<li>
+			<div .content>
+				<img .card-cover />
+				<div .card-labels />
+				<div .card-title />
+				<div .badges />
+			</div>
+			<div .card-edit>
+				<i .ft.ft-pencil.dark-hover />
+			</div>
+		</li>
+	</div>
+
+	<header>
+		<a href="http://misoftware.rs"><img src="logo_mi.png" /></a>
+	</header>
+
+	<h1 .board-header.link-taco>Welcome Board</h1>
+
+	<main>
+		<button #btn-add-list.std-btn>Add a new list...</button>
+	</main>
+</body>
+</html>

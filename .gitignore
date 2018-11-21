@@ -1,0 +1,24 @@
+/OLD
+/TODO
+/NativeOxyPlot/Src
+ADHUSDAHUSDA
+
+# Reignore somethings
+*.psd
+
+# Garbage
+.DS_Store
+ipch/
+Debug/
+Release/
+*.o
+*.obj
+*.suo
+*.sdf
+*.aps
+
+
+#DUB things
+.dub
+docs.json
+__dummy.html

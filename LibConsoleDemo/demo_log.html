@@ -1,0 +1,19 @@
+﻿<html>
+<script type="text/tiscript">
+	self#b1.onClick = function() {
+		console.log("logggg");
+	};
+	self#b2.onClick = function() {
+		view.dialog{
+			url: self.url("dialog.html"),
+			alignment: 5,
+			screen: view.screen
+		};
+	};
+</script>
+
+<body>
+	<button #b1>console.log()</button>
+	<br/><button #b2>console.log() in a dialog</button>
+</body>
+</html>

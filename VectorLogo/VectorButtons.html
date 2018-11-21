@@ -1,0 +1,69 @@
+<html>
+<head>
+	<style>
+		body
+		{
+			margin: 0;
+			padding: 20px;
+			background: #0D0E27;
+		}
+		.block-btn
+		{
+			flow: stack;
+			size: 130px 30px;
+		}
+		.block-btn button
+		{
+			size: *;
+			background: white;
+			position: relative;
+			z-index: 9;
+			cursor: pointer;
+		}
+		.block-btn div:first-child,
+		.block-btn div:last-child
+		{
+			size: *;
+			position: relative;
+			width: calc(100% + 2px);
+			height: calc(100% + 2px);
+		}
+		.block-btn div:first-child
+		{
+			left: -3px;
+			bottom: -1px;
+			background: #247AE2;
+		}
+		.block-btn div:last-child
+		{
+			background: #FF7818;
+			right: -1px;
+			top: -3px;
+		}
+		.block-btn:hover div:first-child
+		{
+			left: -6px;
+			bottom: -4px;
+			transition: left(quart-in-out, 300ms) bottom(quart-in-out, 300ms);
+		}
+		.block-btn:hover div:last-child
+		{
+			right: -4px;
+			top: -6px;
+			transition: right(quart-in-out, 300ms) top(quart-in-out, 300ms);
+		}
+	</style>
+
+	<script type="text/tiscript">
+		
+	</script>
+</head>
+
+<body>
+	<div .block-btn>
+		<div />
+		<button>here</button>
+		<div />
+	</div>
+</body>
+</html>

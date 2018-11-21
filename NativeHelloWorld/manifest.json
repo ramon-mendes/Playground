@@ -1,0 +1,5 @@
+{
+	"title": "NativeLoadDemo",
+	"description": "Uses a native behavior to simply show Hello World. C#/.NET assemblys are downloaded and loaded at runtime from GitHub.",
+	"native": true
+}

@@ -1,0 +1,4 @@
+{
+	"title": "vivus.tis demonstration",
+	"description": "Vivus.tis library allows to animate SVG strokes. This library is a port of vivus.js to Sciter and source-code and instructions can be found [[https://github.com/MISoftware/vivus.tis|here]]"
+}

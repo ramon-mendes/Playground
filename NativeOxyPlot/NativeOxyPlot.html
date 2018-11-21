@@ -1,0 +1,109 @@
+<!-- OmniView:on -->
+<html>
+<head>
+	<style>
+		@import url(switch.css);
+
+		body { font-family: system; }
+		h2, h3 { flow: horizontal; border-spacing: 15px; vertical-align: middle; horizontal-align: center; }
+		h3 { color: #5271d7 }
+		chart { display: block; }
+		.hidden { visibility: none; }
+
+		[dark] { background: url(blackgrain.png); }
+		[dark] h2 { color: white; }
+		
+		.c1, .c2
+		{
+			size: 600px 400px;
+			padding: 0 *;
+			behavior: AreaChart;
+		}
+
+		.c3
+		{
+			size: 800px 400px;
+			padding: 0 *;
+			behavior: WeatherChart;
+		}
+	</style>
+
+	<script type="text/tiscript">
+		var el_s1 = $(.s1);
+		var el_s2 = $(.s2);
+		var el_c1 = $(.c1);
+		var el_c2 = $(.c2);
+
+		self.post(::el_s1.value = 0);
+		self.post(::el_s2.value = 0);
+
+		el_s1.onValueChanged = function() {
+			var mode = !!self.@#dark;
+			self.@#dark = mode ? undefined : true;
+
+			el_c1.style#visibility = !mode ? "none" : undefined;
+			el_c2.style#visibility = !mode ? "visible" : undefined;
+		};
+		el_s2.onValueChanged = function() {
+			var mode = this.value == "1";
+			self#sec1.style#visibility = mode ? "none" : undefined;
+			self#sec2.style#visibility = mode ? "visible" : undefined;
+		};
+	</script>
+
+	<script type="text/tiscript">
+		// First chart - generate random data
+		var lastms = 50;
+
+		function AddMS() {
+			const RANGE = 6;
+			var add = RANGE / 2 - Math.random() * RANGE;
+			var newms = lastms + add;
+			if(newms > 100 || newms < 0)
+				newms = lastms - add;
+			lastms = newms;
+
+			el_c1.AddMS(lastms.toInteger());
+			el_c2.AddMS(lastms.toInteger());
+		}
+
+		for(var i = 0; i < 300; i++) {
+			AddMS();
+		}
+
+		self.timer(20, function () {
+			AddMS();
+			return true;
+		});
+	</script>
+</head>
+
+<body>
+	<header>
+		<h2>
+			Charts in Sciter with OxyPlot library
+
+			<switch .s2>
+				<option value=0>Chart 1</option>
+				<option value=1>Chart 2</option>
+			</switch>
+
+			<switch .s1>
+				<option value=0>White</option>
+				<option value=1>Dark</option>
+			</switch>
+		</h2>
+	</header>
+
+	<section #sec1>
+		<h3>Network latency (random numbers)</h3>
+		<chart .c1></chart>
+		<chart .c2.hidden black-style></chart>
+	</section>
+
+	<section #sec2.hidden>
+		<h3>Interactive chart (Temperature x Humidity over time of POA airport weather station)</h3>
+		<chart .c3></chart>
+	</section>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+	"title": "NativeOxyPlot",
+	"description": "Interactive charts for Sciter using OxyPlot. Read more about it [[http://misoftware.rs/Home/Post/NativeBehaviors|here]]. C#/.NET assemblys are downloaded and loaded at runtime from GitHub.",
+	"native": true
+}

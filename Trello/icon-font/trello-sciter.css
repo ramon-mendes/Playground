@@ -1,0 +1,17 @@
+@font-face
+{
+	font-family: trello;
+	font-style: normal;
+	src: url(trello.ttf);
+}
+
+.ft
+{
+	display: inline-block;
+	font-family: trello;
+	font-size: 1.2em;
+	font-style: normal;
+	font-rendering-mode: classic;
+}
+
+@import url(trello-codes.css);

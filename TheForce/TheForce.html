@@ -1,0 +1,90 @@
+<!-- OmniView:on -->
+<html>
+<head>
+	<style>
+		body
+		{
+			margin: 0;
+			background: rgba(9, 77, 74, 1);
+		}
+		@font-face
+		{
+			font-family: 'Rubik Black';
+			font-style: normal;
+			src: url(Rubik-Black.ttf);
+		}
+		@font-face
+		{
+			font-family: 'Rubik Regular';
+			font-style: normal;
+			src: url(Rubik-Regular.ttf);
+		}
+
+		div
+		{
+			margin: *;
+			size: 1280px 720px;
+			background: url(img.jpg);
+			foreground: linear-gradient(top, rgba(9, 77, 74, 0), rgba(9, 77, 74, 1));
+
+			vertical-align: middle;
+			horizontal-align: middle;
+		}
+
+		main
+		{
+			text-align: center;
+		}
+		h1
+		{
+			position: relative;
+			font-family: 'Rubik Black';
+			font-size: 70px;
+			font-weight: normal;
+			color: #5DF2AE;
+			text-shadow:
+				4px 6px 0 #fff,
+				6px 4px 0 #fff,
+				6px 6px 0 #fff,
+				5px 5px 0 #006661;
+
+			top: -70px;
+			opacity: 0;
+		}
+		h1[show], h2[show]
+		{
+			top: 0;
+			opacity: 1;
+			transition: opacity(linear, 800ms) top(cubic-out, 1400ms);
+		}
+
+		h2
+		{
+			position: relative;
+			color: white;
+			font-family: 'Rubik Regular';
+			font-weight: normal;
+
+			top: 70px;
+			opacity: 0;
+		}
+	</style>
+
+	<script type="text/tiscript">
+		self.timer(500, function() {
+			$(h1).@#show = true;
+			self.timer(500, function() {
+				$(h2).@#show = true;
+			});
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<main>
+			<h1>May the Force Be with you</h1>
+			<h2>The journey towards 'The Last Jedi.'</h2>
+		</main>
+	</div>
+</body>
+</html>

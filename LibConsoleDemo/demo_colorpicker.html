@@ -1,0 +1,38 @@
+﻿<html>
+<script type="text/tiscript">
+	$(.box).onClick = function() {
+		console.colorpick( this, #background-color );
+	};
+</script>
+
+<style>
+	div.signature b.arg {}
+	div.signature b.type {}
+
+	.box
+	{
+		size: 90px;
+		border-radius: 4px;
+		border: solid 1px;
+		cursor: pointer;
+		flow: vertical;
+		text-align: center;
+		vertical-align: middle;
+		font-weight: bold;
+	}
+</style>
+
+<body>
+	<!--console.colorpick(
+		<b .arg>el_target</b>:<b .type>Element</b>,
+		<b .arg>css_prop</b>:<b .type>Symbol</b>
+	)-->
+
+	<code>$(.box).onClick = function() {
+		console.colorpick( this, #background-color );
+	};</code>
+	<br />
+	<br />
+	<div .box>.box</div>
+</body>
+</html>

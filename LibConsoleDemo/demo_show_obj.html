@@ -1,0 +1,21 @@
+﻿<!-- OmniView:on -->
+<html>
+<script type="text/tiscript">
+	$(button).onClick = function() {
+		var obj = JSON.parse($(pre).text);
+		log(obj);
+		console.show(obj);
+	}
+</script>
+
+<body>
+	<button>console.show() Object bellow (JSON representation)</button>
+	<pre>{
+	field1: 1234,
+	field2: false,
+	field_complex: {
+		inner_field: "MEOW"
+	},
+}</pre>
+</body>
+</html>

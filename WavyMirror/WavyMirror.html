@@ -1,0 +1,62 @@
+<!-- OmniView:on -->
+<html>
+<head>
+	<script type="text/tiscript">
+		var img = self.loadImage($(img).@#src, function(img) {
+			var step = 0;
+			var i = 0;
+		
+			$(div).style#width = img.width;
+			$(div).style#height = img.height;
+
+			$(div).paintBackground = function(gfx) {
+				for(var i = 0; i < img.height; ++i)
+				{
+					gfx.blendImage(img,
+						Math.sin(40 * (step+i / 2.0) * (i / 2.0))*3,
+						20+i,
+						0,
+						img.height-i,
+						img.width,
+						1,
+						(img.height.toFloat() - i) / img.height.toFloat()
+					);
+				}
+				step += 0.00025;
+			};
+
+			self.timer(35, ::$(div).refresh());
+		});
+	</script>
+
+	<style>
+		body
+		{
+			flow: vertical;
+			horizontal-align: middle;
+			margin: 0;
+			padding: 20px;
+			background: url(bg.png) no-repeat #251024;
+			background-size: cover;
+		}
+
+		h1
+		{
+			margin-bottom: 40px;
+			color: white;
+			font-size: 30px;
+			font-family: Consolas, monospace;
+
+			text-align: center;
+			text-shadow: 0 0 10px #448;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Welcome aboard!</h1>
+	<img src="OmniFiddler.png" />
+	<div />
+	<img src="logo_mi.png" style="margin-top: 100px" />
+</body>
+</html>

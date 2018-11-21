@@ -1,0 +1,156 @@
+var dnd_card_captured = false;
+var dnd_list_captured = false;
+var dnd_data;
+
+self.paintForeground = function(gfx) {
+	if(dnd_card_captured || dnd_list_captured)
+	{
+		gfx.rotate(3.5deg);
+		gfx.drawImage(dnd_data.img, dnd_data.drawx+15, dnd_data.drawy-8);
+	}
+}
+
+class DndListBehavior : Behavior
+{
+	function onMouse(evt)
+	{
+		if(dnd_list_captured)
+		{
+			if(evt.type == Event.MOUSE_UP)
+			{
+				dnd_list_captured = false;
+				this.@.removeClass("indrag");
+				this.capture(false);
+			}
+			else if(evt.type == Event.MOUSE_MOVE)
+			{
+				dnd_data.drawx = evt.xRoot - dnd_data.offsetx;
+				dnd_data.drawy = evt.yRoot - dnd_data.offsety;
+				self.refresh();
+
+				// move between lists
+				for(var el in this.parent.$$(section))
+				{
+					if(el == this)
+						continue;
+					
+					var pos = el.box(#left, #margin, #root) + el.box(#width)/2;
+					if(el.index < this.index)
+					{
+						if(evt.xRoot < pos)
+						{
+							this.parent.insert(this, el.index);
+							//break;
+						}
+					}
+					else if(evt.xRoot > pos)
+					{
+						this.parent.insert(this, el.index+1);
+						//break;
+					}
+				}
+			}
+		}
+		
+		if(evt.target && evt.target.$p(.list-header))
+		{
+			if(evt.type == Event.MOUSE_DRAG_REQUEST)
+			{
+				var (w,h) = this.box(#dimension);
+				dnd_data = {
+					img: new Image(w, h, this),
+					offsetx: evt.x,
+					offsety: evt.y,
+					drawx: evt.xRoot - evt.x,
+					drawy: evt.yRoot - evt.y
+				};
+
+				this.@.addClass("indrag");
+				this.capture(#strict);
+				dnd_list_captured = true;
+				return true;
+			}
+		}
+	}
+}
+
+class DndCardBehavior : Behavior
+{
+	function onMouse(evt)
+	{
+		if(dnd_card_captured)
+		{
+			if(evt.type == Event.MOUSE_UP)
+			{
+				dnd_card_captured = false;
+				this.@.removeClass("indrag");
+				this.capture(false);
+			}
+			else if(evt.type == Event.MOUSE_MOVE)
+			{
+				dnd_data.drawx = evt.xRoot - dnd_data.offsetx;
+				dnd_data.drawy = evt.yRoot - dnd_data.offsety;
+				self.refresh();
+
+				// move between colums
+				var dnd_pos_midx = dnd_data.drawx + this.box(#width)/2;
+				var el_cur_col = this.$p(section);
+
+				for(var el_col in $$(main > section))
+				{
+					if(el_col==el_cur_col)
+						continue;
+
+					var (x1,y1,x2,y2) = el_col.box(#rect, #padding, #root);
+					if(dnd_pos_midx >= x1 && dnd_pos_midx < x2)
+					{
+						el_col.$(ul).insert(this, 0);
+						break;
+					}
+				}
+
+				// move between cards
+				for(var el in this.parent)
+				{
+					if(el == this)
+						continue;
+					
+					var pos = el.box(#top, #margin, #root) + el.box(#height)/2;
+					if(el.index < this.index)
+					{
+						if(evt.yRoot < pos)
+						{
+							this.parent.insert(this, el.index);
+							//break;
+						}
+					}
+					else if(evt.yRoot > pos)
+					{
+						this.parent.insert(this, el.index+1);
+						//break;
+					}
+				}
+			}
+			
+			return;
+		}
+		
+		if(evt.type == Event.MOUSE_DRAG_REQUEST)
+		{
+			var (w,h) = this.box(#dimension);
+			var (x,y) = this.box(#position, #margin, #screen)
+			dnd_data = {
+				img: new Image(w, h, this),
+				offsetx: evt.x,
+				offsety: evt.y,
+				drawx: evt.xRoot - evt.x,
+				drawy: evt.yRoot - evt.y
+			};
+
+			this.@.addClass("indrag");
+			this.capture(#strict);
+			dnd_card_captured = true;
+			return true;
+		}
+	}
+}
